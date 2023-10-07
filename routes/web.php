@@ -6,6 +6,7 @@ use App\Http\Controllers\Authentication\VerificationController;
 use App\Http\Controllers\Authentication\ForgotPasswordController;
 use App\Http\Controllers\AvailabilityBatchController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'isVerified'])->group(function () {
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::post('/', [ProfileController::class, 'update'])->name('update');
+    });
+
     Route::get('/dashboard', function () {
         return view('index');
     })->name('dashboard');
