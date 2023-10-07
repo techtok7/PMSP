@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.proxy": {
+			"enable": true,
+			"baseUri": "/",
+			"proxyUri": "http://127.0.0.1:8000"
+		},
+	}
+}
