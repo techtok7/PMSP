@@ -12,7 +12,7 @@ class RegistrationController extends Controller
 {
     public function index(Request $request)
     {
-        return view('modules.authentication.register.login.index');
+        return view('modules.authentication.register.index');
     }
 
     public function store(StoreRegisterRequest $request)

@@ -19,10 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('index');
-})->name('dashboard');
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -33,4 +29,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+    Route::get('/dashboard', function () {
+        return view('index');
+    })->name('dashboard');
 });
