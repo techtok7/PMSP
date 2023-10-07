@@ -1,6 +1,6 @@
 @extends('layouts.app')
+
 @section('content')
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="mt-5 mx-2">
@@ -9,7 +9,7 @@
                         <h3 class="card-title">User Profile Update</h3>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('profile_update') }}" method="post">
+                        <form action="{{ route('profile.update') }}" method="post">
                             @csrf
                             <div class="input-group mb-3">
                                 <input type="text" name="name" id="name" class="form-control"

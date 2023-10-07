@@ -43,6 +43,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'isVerified'])->group(function () {
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        Route::post('/', [ProfileController::class, 'update'])->name('update');
+    });
+
     Route::get('/dashboard', function () {
         return view('index');
     })->name('dashboard');
@@ -80,6 +85,4 @@ Route::middleware(['auth', 'isVerified:0'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
-    Route::get('profile', [ProfileController::class, 'profile'])->name('user.profile');
-    Route::post('profile_update', [ProfileController::class, 'profile_update'])->name('profile_update');
 });

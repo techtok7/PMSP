@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\UpdateProfileRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function profile() {
+    public function index()
+    {
         $user = Auth::user();
-        return view('modules.user.profile')->with('user',$user);
+        return view('modules.profile.index', compact('user'));
     }
 
-    public function profile_update(UpdateProfileRequest $request) {
-        $userData = $request->validated();
-        $user = User::find(Auth::id());
-        $user->update(["name"=>$userData["name"], "email"=>$userData['email']]);
+    public function update(UpdateProfileRequest $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-        return redirect()->back()->withSuccess('Data updated successfully');
+        $user->update($request->validated());
+
+        return redirect()->back()->withSuccess('Profile updated successfully');
     }
 }
