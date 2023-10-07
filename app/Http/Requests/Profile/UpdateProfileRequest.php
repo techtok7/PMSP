@@ -23,7 +23,9 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'email' => 'required|email|unique:users,email,' . auth()->user()->id,
-            'name' => 'required'
+            'name' => 'required|string|max:255',
+            'minimum_minutes' => 'required|integer|min:30',
+            'maximum_minutes' => 'required|integer|min:30',
         ];
     }
 }

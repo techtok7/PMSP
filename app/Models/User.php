@@ -23,6 +23,8 @@ class User extends Authenticatable
         'password',
         'is_verified',
         'otp',
+        'minimum_minutes',
+        'maximum_minutes',
     ];
 
     /**

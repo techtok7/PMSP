@@ -24,7 +24,7 @@ class VerificationController extends Controller
                 'otp' => null
             ]);
 
-            return response()->route('dashboard')->withSuccess("Email verified successfully");
+            return redirect()->route('dashboard')->withSuccess("Email verified successfully");
         }
 
         return back()->withError("Invalid OTP");

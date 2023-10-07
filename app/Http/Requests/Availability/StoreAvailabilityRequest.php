@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Availability;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAvailabilityRequest extends FormRequest
 {
@@ -23,8 +24,17 @@ class StoreAvailabilityRequest extends FormRequest
     {
         return [
             'type' => 'required|string|in:1,2',
-            'start_date' => 'required|date|before_or_equal:end_date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'start_date' => [
+                'required',
+                'date',
+                Rule::when(request()->type == 2, 'before_or_equal:end_date'),
+            ],
+            'end_date' => [
+                'nullable',
+                'date',
+                'required_if:type,2',
+                Rule::when(request()->type == 2, 'after_or_equal:start_date'),
+            ],
             'start_time' => 'required|date_format:H:i|before_or_equal:end_time',
             'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
             'days' => 'required_if:type,2|array|min:1',
