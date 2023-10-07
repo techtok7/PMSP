@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
+use App\Http\Controllers\Authentication\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,9 +28,20 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::middleware(['auth', 'isVerified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('index');
     })->name('dashboard');
+});
+
+
+Route::middleware(['auth', 'isVerified:0'])->group(function () {
+    Route::prefix('verification')->group(function () {
+        Route::get('/', [VerificationController::class, 'index'])->name('verification.index');
+        Route::post('/', [VerificationController::class, 'store'])->name('verification.store');
+    });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
 });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\Register\StoreRegisterRequest;
+use App\Jobs\SendMail;
+use App\Mail\VerificationOtp;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +23,16 @@ class RegistrationController extends Controller
             $userDetails = $request->validated();
 
             $user = User::create($userDetails);
+
+            $otp = rand(100000, 999999);
+
+            $user->update([
+                'otp' => $otp
+            ]);
+
+            $mailable = new VerificationOtp($user->name, $otp);
+
+            SendMail::dispatch($user->email, $mailable);
 
             Auth::login($user);
 

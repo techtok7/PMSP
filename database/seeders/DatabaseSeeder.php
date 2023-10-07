@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         ], [
             'name' => 'TechTok7',
             'password' => bcrypt('password'),
+            'is_verified' => true
         ]);
     }
 }
