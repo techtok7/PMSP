@@ -3,6 +3,8 @@
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\VerificationController;
+use App\Http\Controllers\ProfileController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,4 +46,6 @@ Route::middleware(['auth', 'isVerified:0'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+    Route::get('profile',[ProfileController::class,'profile'])->name('user.profile');
+    Route::post('profile_update',[ProfileController::class,'profile_update'])->name('profile_update');
 });
