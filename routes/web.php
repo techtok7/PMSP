@@ -3,9 +3,9 @@
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\VerificationController;
+use App\Http\Controllers\Authentication\ForgotPasswordController;
 use App\Http\Controllers\AvailabilityBatchController;
 use App\Http\Controllers\AvailabilityController;
-use App\Models\AvailabilityBatch;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +29,16 @@ Route::middleware('guest')->group(function () {
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
     Route::get('/register', [RegistrationController::class, 'index'])->name('register.index');
     Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
+
+    Route::prefix('forgot-password')->name('forgot-password.')->group(function () {
+        Route::get('/', [ForgotPasswordController::class, 'index'])->name('index');
+        Route::post('/', [ForgotPasswordController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('reset-password')->group(function () {
+        Route::get('/{token}', [ForgotPasswordController::class, 'show'])->name('password.reset');
+        Route::post('/', [ForgotPasswordController::class, 'update'])->name('reset-password.update');
+    });
 });
 
 Route::middleware(['auth', 'isVerified'])->group(function () {
