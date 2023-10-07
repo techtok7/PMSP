@@ -3,6 +3,7 @@
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\VerificationController;
+use App\Http\Controllers\Authentication\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
     Route::get('/register', [RegistrationController::class, 'index'])->name('register.index');
     Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
+    Route::get('forgot_password',[ForgotPasswordController::class,'index'])->name('password.index');
+    Route::post('forgot_password_process',[ForgotPasswordController::class,'forgot_password'])->name('password.process');
+    Route::get('reset-password/{token}',[ForgotPasswordController::class,'reset_password'])->name('password.reset');
+    Route::post('reset-password',[ForgotPasswordController::class,'password_update'])->name('password.update');
 });
 
 Route::middleware(['auth', 'isVerified'])->group(function () {
