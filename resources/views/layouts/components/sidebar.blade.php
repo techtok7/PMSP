@@ -25,11 +25,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('availabilities.index') }}"
+                        class="nav-link {{ request()->is('availabilities') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-clock"></i>
+                        <p>Availabilities</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-calendar-alt"></i>
-                        <p>
-                            Calendar
-                        </p>
+                        <p>Calendar</p>
                     </a>
                 </li>
                 <li class="nav-item">
