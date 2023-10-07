@@ -11,7 +11,7 @@ class StoreAvailabilityRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'type' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
+            'days' => 'required|array|min:1',
         ];
     }
 }

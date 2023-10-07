@@ -22,4 +22,9 @@ class Availability extends Model
     protected $casts = [
         'is_occupied' => 'boolean',
     ];
+
+    public function availabilityBatch()
+    {
+        return $this->belongsTo(AvailabilityBatch::class);
+    }
 }

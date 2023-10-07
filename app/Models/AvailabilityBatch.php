@@ -23,4 +23,14 @@ class AvailabilityBatch extends Model
         'days' => 'array',
         'is_dirty' => 'boolean',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class);
+    }
 }
