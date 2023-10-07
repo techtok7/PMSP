@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication\LoginController;
+use App\Http\Controllers\Authentication\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::get('/dashboard', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
+    Route::get('/register', [RegistrationController::class, 'index'])->name('register.index');
+    Route::post('/register', [RegistrationController::class, 'store'])->name('register.store');
 });
 
 Route::middleware('auth')->group(function () {
