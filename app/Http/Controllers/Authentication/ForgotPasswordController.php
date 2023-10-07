@@ -12,29 +12,35 @@ use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
-    public function index() {
-        return view('modules.authentication.password.index');
+    public function index()
+    {
+        return view('modules.authentication.password.forgot-password');
     }
 
-    public function forgot_password(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            "email"=>"required|email"
+            "email" => "required|email"
         ]);
 
         $status = Password::sendResetLink(
             $request->only('email')
         );
+
         return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => $status])
-                : back()->withErrors(['email' => $status]);
+            ? back()->with(['status' => $status])
+            : back()->withErrors(['email' => $status]);
     }
 
-    public function reset_password($token)
+    public function show(Request $request, $token)
     {
-        return view('modules.authentication.password.reset_password')->with('token',$token);
+        $email = $request->email ?? '';
+
+        return view('modules.authentication.password.reset-password', compact('token', 'email'));
     }
 
-    public function password_update(Request $request) {
+    public function update(Request $request)
+    {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
@@ -55,7 +61,7 @@ class ForgotPasswordController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [$status]]);
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => [$status]]);
     }
 }

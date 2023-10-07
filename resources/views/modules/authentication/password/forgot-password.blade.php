@@ -7,7 +7,7 @@
                 <div class="h1"><b>Forgot Password</b></div>
             </div>
             <div class="card-body">
-                <form action="{{ route('password.process') }}" method="post">
+                <form action="{{ route('forgot-password.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">

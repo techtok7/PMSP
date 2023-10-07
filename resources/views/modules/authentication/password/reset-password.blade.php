@@ -7,9 +7,10 @@
                 <div class="h1"><b>Reset Password</b></div>
             </div>
             <div class="card-body">
-                <form action="{{ route('password.process') }}" method="post">
+                <form action="{{ route('reset-password.update') }}" method="post">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
+                    <input type="hidden" name="email" value="{{ $email }}">
                     <div class="input-group mb-3">
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                         <div class="input-group-append">

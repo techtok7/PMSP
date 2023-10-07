@@ -51,7 +51,7 @@
                     </a>
                 </div>
                 <p class="mb-1">
-                    <a href="{{ route('forgot_password.index') }}">I forgot my password</a>
+                    <a href="{{ route('forgot-password.index') }}">I forgot my password</a>
                 </p>
                 <p class="mb-0">
                     <a href="{{ route('register.index') }}" class="text-center">Register a new membership</a>

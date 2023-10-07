@@ -37,7 +37,7 @@ class AvailabilityBatchController extends Controller
      */
     public function show(AvailabilityBatch $availabilityBatch)
     {
-        //
+        return $availabilityBatch;
     }
 
     /**
