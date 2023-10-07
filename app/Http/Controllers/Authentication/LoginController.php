@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Authentication\Login\StoreAuthenticate;
+use App\Http\Requests\Authentication\Login\StoreAuthenticateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +14,7 @@ class LoginController extends Controller
         return view('modules.authentication.login.index');
     }
 
-    public function authenticate(StoreAuthenticate $request)
+    public function authenticate(StoreAuthenticateRequest $request)
     {
         $credentials = $request->validated();
 
