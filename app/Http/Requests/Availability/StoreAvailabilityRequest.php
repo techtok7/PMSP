@@ -22,12 +22,12 @@ class StoreAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i',
-            'days' => 'required|array|min:1',
+            'type' => 'required|string|in:1,2',
+            'start_date' => 'required|date|before_or_equal:end_date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'start_time' => 'required|date_format:H:i|before_or_equal:end_time',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
+            'days' => 'required_if:type,2|array|min:1',
         ];
     }
 }

@@ -23,6 +23,16 @@ class Availability extends Model
         'is_occupied' => 'boolean',
     ];
 
+    protected function getStartTimeAttribute($value)
+    {
+        return date('H:i', strtotime($value));
+    }
+
+    protected function getEndTimeAttribute($value)
+    {
+        return date('H:i', strtotime($value));
+    }
+
     public function availabilityBatch()
     {
         return $this->belongsTo(AvailabilityBatch::class);

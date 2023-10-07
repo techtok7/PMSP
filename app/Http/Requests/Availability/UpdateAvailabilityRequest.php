@@ -21,6 +21,10 @@ class UpdateAvailabilityRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'start_date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required|date_format:H:i|before_or_equal:end_time',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
+        ];
     }
 }

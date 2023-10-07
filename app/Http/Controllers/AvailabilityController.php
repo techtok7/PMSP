@@ -96,7 +96,7 @@ class AvailabilityController extends Controller
      */
     public function show(Availability $availability)
     {
-        //
+        return view('modules.availabilities.show', compact('availability'));
     }
 
     /**
@@ -104,7 +104,7 @@ class AvailabilityController extends Controller
      */
     public function edit(Availability $availability)
     {
-        //
+        return view('modules.availabilities.index', compact('availability'));
     }
 
     /**
@@ -112,7 +112,20 @@ class AvailabilityController extends Controller
      */
     public function update(UpdateAvailabilityRequest $request, Availability $availability)
     {
-        //
+        try {
+            $availability->update($request->validated());
+
+            if ($availability->availabilityBatch != null) {
+                $availability->availabilityBatch->update([
+                    'is_dirty' => true,
+                ]);
+            }
+
+            return redirect()->route('availabilities.index')->with('success', 'Availability updated successfully.');
+        } catch (\Throwable $th) {
+            Log::error('AvailabilityController - update: ' . $th->getMessage());
+            return redirect()->route('availabilities.index')->with('error', 'Something went wrong.');
+        }
     }
 
     /**
@@ -120,6 +133,8 @@ class AvailabilityController extends Controller
      */
     public function destroy(Availability $availability)
     {
-        //
+        $availability->delete();
+
+        return redirect()->route('availabilities.index')->with('success', 'Availability deleted successfully.');
     }
 }

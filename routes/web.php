@@ -3,7 +3,9 @@
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\VerificationController;
+use App\Http\Controllers\AvailabilityBatchController;
 use App\Http\Controllers\AvailabilityController;
+use App\Models\AvailabilityBatch;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +36,17 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         return view('index');
     })->name('dashboard');
 
+    Route::prefix('availability-batches')->name('availability-batches.')->group(function () {
+        Route::get('/', [AvailabilityBatchController::class, 'index'])->name('index');
+        Route::post('/', [AvailabilityBatchController::class, 'store'])->name('store');
+        // Route::any('/datatable', [AvailabilityBatchController::class, 'datatable'])->name('datatable');
+        Route::get('/create', [AvailabilityBatchController::class, 'create'])->name('create');
+        Route::get('/{availabilityBatch}', [AvailabilityBatchController::class, 'show'])->name('show');
+        Route::get('/{availabilityBatch}/edit', [AvailabilityBatchController::class, 'edit'])->name('edit');
+        Route::put('/{availabilityBatch}', [AvailabilityBatchController::class, 'update'])->name('update');
+        Route::delete('/{availabilityBatch}', [AvailabilityBatchController::class, 'destroy'])->name('destroy');
+    });
+
     Route::prefix('availabilities')->group(function () {
         Route::get('/', [AvailabilityController::class, 'index'])->name('availabilities.index');
         Route::post('/', [AvailabilityController::class, 'store'])->name('availabilities.store');
@@ -42,7 +55,7 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         Route::get('/{availability}', [AvailabilityController::class, 'show'])->name('availabilities.show');
         Route::get('/{availability}/edit', [AvailabilityController::class, 'edit'])->name('availabilities.edit');
         Route::put('/{availability}', [AvailabilityController::class, 'update'])->name('availabilities.update');
-        Route::delete('/{availability}', [AvailabilityController::class, 'destroy'])->name('availabilities.destroy');
+        Route::get('/{availability}/delete', [AvailabilityController::class, 'destroy'])->name('availabilities.destroy');
     });
 });
 
