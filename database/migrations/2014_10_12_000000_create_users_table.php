@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_verified')->default(false);
             $table->string('otp', 6)->nullable();
+            $table->integer('minimum_minutes')->default(30);
+            $table->integer('maximum_minutes')->default(60);
             $table->rememberToken();
             $table->timestamps();
         });

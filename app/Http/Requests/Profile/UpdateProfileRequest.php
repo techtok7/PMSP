@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Availability;
+namespace App\Http\Requests\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAvailabilityRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class UpdateAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required|date_format:H:i|before_or_equal:end_time',
-            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
+            'email' => 'required|email|unique:users,email,' . auth()->user()->id,
+            'name' => 'required'
         ];
     }
 }
