@@ -4,10 +4,10 @@
     <div class="register-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="{{ route('dashboard') }}" class="h1"><b>Admin</b>LTE</a>
+                <a href="{{ route('dashboard') }}" class="h1"><b>Register</b></a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Register a new membership</p>
+                
                 <form action="{{ route('register.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
@@ -30,13 +30,13 @@
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                                <span class="fas fa-key"></span>
                             </div>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"
-                            placeholder="Retype password">
+                            placeholder="Confirm password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -53,16 +53,19 @@
                             </div>
                         </div>
 
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <button class="btn btn-primary btn-block">Not sign in?  Sign Up</button>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </form>
                 <div class="social-auth-links text-center">
                     <a href="#" class="btn btn-block btn-primary">
                         <i class="fab fa-facebook mr-2"></i>
-                        Sign up using Facebook
+                        Sign up using Microsoft
                     </a>
                     <a href="#" class="btn btn-block btn-danger">
                         <i class="fab fa-google-plus mr-2"></i>
