@@ -38,11 +38,11 @@
                                                     </div>
                                                 </div>
                                                 <input type="text" name="name" id="name" class="form-control"
-                                                    value="{{ $user->name }}" placeholder="Full name">
+                                                    value="{{ $user->name }}" placeholder="Full name" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Name:</label>
+                                            <label for="name">Email:</label>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">
@@ -50,7 +50,7 @@
                                                     </div>
                                                 </div>
                                                 <input type="email" name="email" id="email" class="form-control"
-                                                    value="{{ $user->email }}" placeholder="Email">
+                                                    value="{{ $user->email }}" placeholder="Email" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -61,9 +61,9 @@
                                                         <span class="fas fa-clock"></span>
                                                     </div>
                                                 </div>
-                                                <input type="number" name="minimum_minutes" id="minimum_minutes"
-                                                    class="form-control" value="{{ $user->minimum_minutes }}"
-                                                    placeholder="Minimum minutes">
+                                                <input type="number" id="minimum_minutes"
+                                                class="form-control" name="minutes" min="0" max="1440" step="1"
+                                                    placeholder="Minimum minutes" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -74,9 +74,10 @@
                                                         <span class="fas fa-clock"></span>
                                                     </div>
                                                 </div>
-                                                <input type="number" name="maximum_minutes" id="maximum_minutes"
-                                                    class="form-control" value="{{ $user->maximum_minutes }}"
-                                                    placeholder="Maximum minutes">
+                                                
+                                                    <input type="number" id="maximum_minutes"
+                                                class="form-control" name="minutes" min="0" max="1440" step="1"
+                                                    placeholder="Maximum minutes" required>
                                             </div>
                                         </div>
                                         <div class="row">
