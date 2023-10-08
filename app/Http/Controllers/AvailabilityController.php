@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Availability\StoreAvailabilityRequest;
 use App\Http\Requests\Availability\UpdateAvailabilityRequest;
 use App\Models\Availability;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +21,10 @@ class AvailabilityController extends Controller
 
     public function datatable()
     {
-        $availabilities = Availability::query();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $availabilities = Availability::where('user_id', $user->id);
 
         $availabilities->with('availabilityBatch');
 
@@ -43,6 +47,7 @@ class AvailabilityController extends Controller
                     'start_time' => $request->start_time,
                     'end_time' => $request->end_time,
                     'day' => strtolower(date('l', $timestamp)),
+                    'slots' => Availability::getAvailableSlots($request),
                 ]);
 
                 return redirect()->route('availabilities.index')->with('success', 'Availability created successfully.');
@@ -78,6 +83,7 @@ class AvailabilityController extends Controller
                         'start_time' => $request->start_time,
                         'end_time' => $request->end_time,
                         'day' => strtolower(date('l', $start)),
+                        'slots' => Availability::getAvailableSlots($request),
                     ]);
 
                     $start = strtotime("+1 day", $start);

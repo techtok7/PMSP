@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('availabilities', function (Blueprint $table) {
+        Schema::create('meetings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('availability_batch_id')->nullable()->default(null)->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('title');
+            $table->string('description');
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->string('day', 10);
-            $table->string('slots')->default('');
-            $table->boolean('is_occupied')->default(false);
+            $table->integer('duration');
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('availabilities');
+        Schema::dropIfExists('meetings');
     }
 };

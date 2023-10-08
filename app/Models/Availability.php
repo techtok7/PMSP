@@ -17,6 +17,7 @@ class Availability extends Model
         'end_time',
         'day',
         'is_occupied',
+        'slots',
     ];
 
     protected $casts = [
@@ -36,5 +37,25 @@ class Availability extends Model
     public function availabilityBatch()
     {
         return $this->belongsTo(AvailabilityBatch::class);
+    }
+
+    static function getAvailableSlots($availability)
+    {
+        $slots = [];
+
+        $start_time = strtotime($availability->start_time);
+        $end_time = strtotime($availability->end_time);
+
+        $val = 0;
+
+        while ($start_time < $end_time) {
+            $val += 30;
+            $slots[] = $val;
+            $start_time += 30 * 60;
+        }
+
+        $slots = '-' . implode('-', $slots) . '-';
+
+        return $slots;
     }
 }

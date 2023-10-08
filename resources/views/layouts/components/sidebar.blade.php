@@ -32,6 +32,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('meetings.index') }}"
+                        class="nav-link {{ request()->is('meetings') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-clock"></i>
+                        <p>Meetings</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-calendar-alt"></i>
                         <p>Calendar</p>

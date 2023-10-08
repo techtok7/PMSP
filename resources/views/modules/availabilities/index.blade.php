@@ -26,7 +26,6 @@
             </div>
         </div>
     </div>
-
     <section class="content">
         <div class="container-fluid">
             <form
@@ -209,6 +208,7 @@
                         }
                     }
                 });
+                $('#type').change();
             });
         </script>
         @if (!isset($availability))
@@ -255,10 +255,10 @@
                         `.replace(':id', data);
 
                                 /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                html += `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        html += `
                         <a href="{{ route('availabilities.show', ':id') }}" class="btn btn-sm btn-info" title="View"><i class="fa fa-eye"></i></a>
                     `.replace(':id', data);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */
 
 
 
