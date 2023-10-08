@@ -82,6 +82,7 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         Route::get('/', [MeetingController::class, 'index'])->name('meetings.index');
         Route::post('/duration', [MeetingController::class, 'duration'])->name('meetings.duration');
         Route::post('/dates', [MeetingController::class, 'dates'])->name('meetings.dates');
+        Route::post('/times', [MeetingController::class, 'times'])->name('meetings.times');
         Route::post('/', [MeetingController::class, 'store'])->name('meetings.store');
         Route::any('/datatable', [MeetingController::class, 'datatable'])->name('meetings.datatable');
         Route::get('/create', [MeetingController::class, 'create'])->name('meetings.create');

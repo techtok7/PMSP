@@ -65,37 +65,26 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-3" id="waraper_start_date">
+                                    <div class="col-4" id="waraper_start_date">
                                         <div class="form-group">
-                                            <label id="label_start_date">Date</label>
+                                            <label>Duration</label>
                                             <select class="form-control" id="duration" name="duration" disabled>
                                                 <option value="">--Select--</option>
-                                                <option value="30">30 Minutes</option>
-                                                <option value="60">60 Minutes</option>
-                                                <option value="120">120 Minutes</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <div class="form-group">
-                                            <label id="label_start_date">Date</label>
+                                            <label>Date</label>
                                             <select name="date" id="date" class="form-control" disabled>
                                                 <option value="">--Select--</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <div class="form-group">
-                                            <label id="label_start_time">Start time</label>
-                                            <select class="form-control times" id="start_time" name="start_time" disabled>
-                                                <option value="">--Select--</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="form-group">
-                                            <label id="label_end_time">End time</label>
-                                            <select class="form-control times" name="end_time" id="end_time" disabled>
+                                            <label>Time</label>
+                                            <select class="form-control" id="time" name="time" disabled>
                                                 <option value="">--Select--</option>
                                             </select>
                                         </div>
@@ -143,6 +132,48 @@
 @push('scripts')
     <script>
         var duration = $('#duration');
+
+        function generateTimeIntervals(start_time, end_time, interval_minutes) {
+            const intervals = [];
+            const startTime = new Date(`1970-01-01T${start_time}`);
+            const endTime = new Date(`1970-01-01T${end_time}`);
+
+            if (startTime >= endTime) {
+                return intervals;
+            }
+
+            let currentTime = startTime;
+
+            while (currentTime < endTime) {
+                const formattedStartTime = currentTime.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const intervalEndTime = new Date(currentTime.getTime() + interval_minutes * 60000);
+
+                if (intervalEndTime > endTime) {
+                    break;
+                }
+
+                const formattedEndTime = intervalEndTime.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                intervals.push(`${formattedStartTime} to ${formattedEndTime}`);
+
+                if (interval_minutes > 30) {
+                    const nextIntervalStartTime = new Date(currentTime.getTime() + 30 * 60000);
+                    currentTime = nextIntervalStartTime;
+                } else {
+                    currentTime = intervalEndTime;
+                }
+            }
+
+            return intervals;
+        }
+
         $(document).ready(function() {
             $('#users').on('change', function() {
                 var userIds = $(this).val();
@@ -155,6 +186,7 @@
                         user_ids: userIds
                     },
                     success: function(res) {
+                        console.log("Complated");
                         var minimum_duration = res.minimum_duration;
                         var maximum_duration = res.maximum_duration;
 
@@ -174,7 +206,7 @@
             });
 
             $("#duration").change(function() {
-                var $date = $(this);
+                var $date = $("#date");
                 var value = $(this).val();
 
                 if (value != '') {
@@ -208,17 +240,54 @@
                 });
             });
 
-            $(document).on('change', '.times', function() {
-                var startTime = $('#start_time').val();
-                var endTime = $('#end_time').val();
+            $("#date").change(function() {
+                var date = $(this).val();
+                var duration = $("#duration").val();
+                var userIds = $("#users").val();
 
-                if (startTime != '' && endTime != '') {
-                    if (startTime > endTime) {
-                        alert('Start time must be less than end time');
-                        $(this).val('');
+                $.ajax({
+                    url: "{{ route('meetings.times') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        user_ids: userIds,
+                        duration: duration,
+                        date: date
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        var timeIntervals = generateTimeIntervals(res.times[0].start_time, res
+                            .times[0].end_time,
+                            parseInt(duration));
+
+                        if (timeIntervals.length > 0) {
+                            $('#time').prop('disabled', false);
+                        }
+
+                        var $time = $("#time");
+                        $time.empty();
+
+                        $time.append(`<option value="">--Select--</option>`);
+                        for (var i = 0; i < timeIntervals.length; i++) {
+                            $time.append(
+                                `<option value="${timeIntervals[i]}">${timeIntervals[i]}</option>`
+                            );
+                        }
                     }
-                }
-            });
+                });
+            })
+
+            // $(document).on('change', '.times', function() {
+            //     var startTime = $('#start_time').val();
+            //     var endTime = $('#end_time').val();
+
+            //     if (startTime != '' && endTime != '') {
+            //         if (startTime > endTime) {
+            //             alert('Start time must be less than end time');
+            //             $(this).val('');
+            //         }
+            //     }
+            // });
         });
     </script>
     @if (!isset($availability))
@@ -265,10 +334,10 @@
                         `.replace(':id', data);
 
                             /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    html += `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    html += `
                         <a href="{{ route('availabilities.show', ':id') }}" class="btn btn-sm btn-info" title="View"><i class="fa fa-eye"></i></a>
                     `.replace(':id', data);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    */
 
 
 
