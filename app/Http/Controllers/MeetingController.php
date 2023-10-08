@@ -23,10 +23,12 @@ class MeetingController extends Controller
 
     public function duration(Request $request)
     {
-        $userIds = $request->user_ids;
+        $userId = $request->user_id;
 
-        $minimumDuration = User::query()->whereIn('id', $userIds)->max('minimum_minutes');
-        $maximumDuration = User::query()->whereIn('id', $userIds)->min('maximum_minutes');
+        $user = User::find($userId);
+
+        $minimumDuration = $user->minimum_minutes;
+        $maximumDuration = $user->maximum_minutes;
 
         return response()->json([
             'minimum_duration' => $minimumDuration,
@@ -36,11 +38,11 @@ class MeetingController extends Controller
 
     public function dates(Request $request)
     {
-        $userIds = $request->user_ids;
+        $userId = $request->user_id;
 
         $minutes = $request->minutes;
 
-        $dates = Availability::whereIn('user_id', $userIds)->where('slots', 'LIKE', "%-$minutes-%")->get()->groupBy('date')->keys();
+        $dates = Availability::where('user_id', $userId)->where('slots', 'LIKE', "%-$minutes-%")->get()->groupBy('date')->keys();
 
         return response()->json([
             'dates' => $dates,
@@ -49,17 +51,13 @@ class MeetingController extends Controller
 
     public function times(Request $request)
     {
-        $userIds = $request->user_ids;
+        $userId = $request->user_id;
 
         $duration = $request->duration;
 
         $date = $request->date;
 
-        $times = Availability::where('date', $date)->where('slots', 'LIKE', "%-$duration-%");
-
-        foreach ($userIds as $userId) {
-            $times->where('user_id', $userId);
-        }
+        $times = Availability::where('user_id', $userId)->where('date', $date)->where('slots', 'LIKE', "%-$duration-%");
 
         return response()->json([
             'times' => $times,

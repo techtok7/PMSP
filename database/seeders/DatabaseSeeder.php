@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'techtok7@gmail.com'
         ], [
             'name' => 'TechTok7',
+            'username' => 'techtok7',
             'password' => bcrypt('password'),
             'is_verified' => true
         ]);
