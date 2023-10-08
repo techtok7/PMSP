@@ -39,6 +39,12 @@ class AvailabilityController extends Controller
     public function store(StoreAvailabilityRequest $request)
     {
         try {
+            if ($request->end_time == '00:00') {
+                return redirect()->route('availabilities.index')->with('error', 'Your ending time must be minimum 00:30');
+            }
+            if($request->start_time == $request->end_time) {
+                return redirect()->route('availabilities.index')->with('error', 'You can not select same start time and end time');
+            }
             if ($request->type == 1) {
                 $timestamp = strtotime($request->start_date);
 
@@ -119,6 +125,12 @@ class AvailabilityController extends Controller
     public function update(UpdateAvailabilityRequest $request, Availability $availability)
     {
         try {
+            if ($request->end_time == '00:00') {
+                return redirect()->back()->with('error', 'Your ending time must be minimum 00:30');
+            }
+            if($request->start_time == $request->end_time) {
+                return redirect()->back()->with('error', 'You can not select same start time and end time');
+            }
             $availability->update($request->validated());
 
             if ($availability->availabilityBatch != null) {
