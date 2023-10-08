@@ -4,6 +4,7 @@ use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\VerificationController;
 use App\Http\Controllers\Authentication\ForgotPasswordController;
+use App\Http\Controllers\Authentication\SocialController;
 use App\Http\Controllers\AvailabilityBatchController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\MeetingController;
@@ -106,13 +107,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::prefix('google')->group(function () {
-    Route::get('/', function () {
-        // return Availability::getAvailableSlots(Availability::find(1));
-        return Socialite::driver('google')->setPrompt('consent')->setApprovalPrompt('force')->redirect();
-    });
+    Route::get('/', [SocialController::class, 'googleRedirect'])->name('google.redirect');
 
-    Route::get('/callback', function () {
-        $user = Socialite::driver('google')->user();
-        dd($user);
-    });
+    Route::get('/callback', [SocialController::class, 'googleCallback'])->name('google.callback');
 });

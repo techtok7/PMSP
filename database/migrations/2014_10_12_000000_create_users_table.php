@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('otp', 6)->nullable();
             $table->integer('minimum_minutes')->default(30);
             $table->integer('maximum_minutes')->default(60);
+            $table->string('google_id')->nullable();
+            $table->string('google_access_token')->nullable();
+            $table->string('google_refresh_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

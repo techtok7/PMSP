@@ -25,6 +25,9 @@ class User extends Authenticatable
         'otp',
         'minimum_minutes',
         'maximum_minutes',
+        'google_id',
+        'google_access_token',
+        'google_refresh_token',
     ];
 
     /**
