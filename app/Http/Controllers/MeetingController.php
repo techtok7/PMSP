@@ -47,6 +47,25 @@ class MeetingController extends Controller
         ]);
     }
 
+    public function times(Request $request)
+    {
+        $userIds = $request->user_ids;
+
+        $duration = $request->duration;
+
+        $date = $request->date;
+
+        $times = Availability::where('date', $date)->where('slots', 'LIKE', "%-$duration-%");
+
+        foreach ($userIds as $userId) {
+            $times->where('user_id', $userId);
+        }
+
+        return response()->json([
+            'times' => $times,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -37,6 +37,8 @@ class SocialController extends Controller
                 'google_access_token' => $googleUser->token,
                 'google_refresh_token' => $googleUser->refreshToken,
             ]);
+
+            return redirect()->route('dashboard');
         } else {
             $userCheck = User::where('email', $googleUser->email)->first();
 
@@ -47,6 +49,8 @@ class SocialController extends Controller
                 ]);
 
                 Auth::login($userCheck);
+
+                return redirect()->route('dashboard');
             } else {
                 $user = User::create([
                     'name' => $googleUser->name,

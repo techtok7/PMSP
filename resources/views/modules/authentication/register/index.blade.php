@@ -7,11 +7,20 @@
                 <a href="{{ route('dashboard') }}" class="h1"><b>Register</b></a>
             </div>
             <div class="card-body">
-                
+
                 <form action="{{ route('register.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" name="name" id="name" class="form-control" placeholder="Full name">
+                        <div class="input-group-append" required>
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username"
+                            pattern="^[a-zA-Z0-9-]+$">
                         <div class="input-group-append" required>
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -56,17 +65,14 @@
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-12">
-                                    <button class="btn btn-primary btn-block">Not sign in?  Sign Up</button>
+                                    <button class="btn btn-primary btn-block">Not sign in? Sign Up</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div class="social-auth-links text-center">
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i>
-                        Sign up using Microsoft
-                    </a>
+                    <p>- OR -</p>
                     <a href="#" class="btn btn-block btn-danger">
                         <i class="fab fa-google-plus mr-2"></i>
                         Sign up using Google+

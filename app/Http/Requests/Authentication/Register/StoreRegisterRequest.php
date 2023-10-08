@@ -23,6 +23,7 @@ class StoreRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username|alpha_dash',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ];
