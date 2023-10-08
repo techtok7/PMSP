@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/fullcalendar/main.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
@@ -215,6 +216,7 @@
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/fullcalendar/main.js') }}"></script>
     <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
     <script src="{{ asset('assets/dist/js/demo.js') }}"></script>
     <script src="{{ asset('assets/dist/js/pages/dashboard.js') }}"></script>

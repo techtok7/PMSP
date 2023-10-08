@@ -7,6 +7,8 @@ use App\Http\Controllers\Authentication\ForgotPasswordController;
 use App\Http\Controllers\Authentication\SocialController;
 use App\Http\Controllers\AvailabilityBatchController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Availability;
@@ -52,9 +54,7 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         Route::post('/', [ProfileController::class, 'update'])->name('update');
     });
 
-    Route::get('/dashboard', function () {
-        return view('index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('availability-batches')->name('availability-batches.')->group(function () {
         Route::get('/', [AvailabilityBatchController::class, 'index'])->name('index');
@@ -90,6 +90,8 @@ Route::middleware(['auth', 'isVerified'])->group(function () {
         Route::put('/{meeting}', [MeetingController::class, 'update'])->name('meetings.update');
         Route::get('/{meeting}/delete', [MeetingController::class, 'destroy'])->name('meetings.destroy');
     });
+
+    Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 });
 
 

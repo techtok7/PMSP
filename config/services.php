@@ -35,5 +35,7 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT'),
+        'access_type' => 'offline',
+        'scopes' => ['openid', 'profile', 'email', 'calendar'],
     ],
 ];

@@ -17,10 +17,6 @@ class GoogleService
 
     public Client $client;
 
-    private Calendar $calendar;
-
-    private $calendarId;
-
     private $accessToken;
 
     private $refreshToken;
@@ -33,25 +29,11 @@ class GoogleService
     {
         $this->client = new Client();
         $this->client->setApplicationName(config('app.name'));
-        $this->client->setScopes($this->scopes);
         $this->client->setClientId(config('services.google.client_id'));
         $this->client->setClientSecret(config('services.google.client_secret'));
-        $this->client->setRedirectUri(config('services.google.redirect'));
-        $this->client->setAccessType('offline');
-        $this->client->setPrompt('consent');
-        $this->client->setApprovalPrompt('force');
-    }
-
-    public function profile()
-    {
-        $oauth2 = new Oauth2($this->client);
-
-        dd($oauth2->userinfo);
-    }
-
-    public function getAuthUrl()
-    {
-        return $this->client->createAuthUrl();
+        $this->client->setScopes([
+            Calendar::CALENDAR,
+        ]);
     }
 
     public function setAccessToken($accessToken)
@@ -65,35 +47,27 @@ class GoogleService
         $this->refreshToken = $refreshToken;
 
         if ($this->client->isAccessTokenExpired()) {
-            $this->client->fetchAccessTokenWithRefreshToken($this->refreshToken);
+            $this->client->fetchAccessTokenWithRefreshToken($refreshToken);
         }
     }
 
-    public function getAccessToken()
+    public function getEvents()
     {
-        return $this->accessToken;
-    }
+        $service = new Calendar($this->client);
 
-    public function getRefreshToken()
-    {
-        return $this->refreshToken;
-    }
+        $calendarId = 'primary';
 
-    public function fetchAccessTokenWithAuthCode($code)
-    {
-        $accessToken = $this->client->fetchAccessTokenWithAuthCode($code);
+        $optParams = [
+            'maxResults' => 10,
+            'orderBy' => 'startTime',
+            'singleEvents' => true,
+            'timeMin' => date('c'),
+        ];
 
-        $this->setAccessToken($accessToken['access_token']);
+        $results = $service->events->listEvents($calendarId, $optParams);
 
-        $this->setRefreshToken($this->client->getRefreshToken());
+        $events = $results->getItems();
 
-        return $accessToken;
-    }
-
-    public function userInfo()
-    {
-        $oauth2 = new Oauth2($this->client);
-
-        return $oauth2->userinfo->get();
+        return $events;
     }
 }

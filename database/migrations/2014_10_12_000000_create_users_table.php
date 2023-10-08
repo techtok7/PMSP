@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable()->default(null);
             $table->boolean('is_verified')->default(false);
             $table->string('otp', 6)->nullable();
             $table->integer('minimum_minutes')->default(30);

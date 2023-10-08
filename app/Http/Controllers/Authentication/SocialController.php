@@ -3,54 +3,63 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\GoogleService;
+use Google\Service\Calendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
 {
     public function googleRedirect()
     {
-        $googlService = new GoogleService();
-
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-
-        if (!$user->google_access_token) {
-            $url = $googlService->getAuthUrl();
-
-            return redirect($url);
-        }
-
-        $googlService->setAccessToken($user->google_access_token);
-
-        $googlService->setRefreshToken($user->google_refresh_token);
-
-        $googlService->profile();
+        return Socialite::driver('google')->with([
+            'access_type' => 'offline',
+            'approval_prompt' => 'force',
+        ])->scopes([
+            Calendar::CALENDAR,
+        ])->redirect();
     }
 
     public function googleCallback(Request $request)
     {
-        $googlService = new GoogleService();
-
-        $tokens = $googlService->fetchAccessTokenWithAuthCode($request->code);
+        $googleUser = Socialite::driver('google')->user();
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $user->update([
-            'google_access_token' => $tokens['access_token'],
-            'google_refresh_token' => $tokens['refresh_token'],
-        ]);
+        if ($user) {
+            if ($user->email !== $googleUser->email) {
+                return redirect()->route('login')->with('error', 'Email did not match');
+            }
+            $user->update([
+                'google_access_token' => $googleUser->token,
+                'google_refresh_token' => $googleUser->refreshToken,
+            ]);
+        } else {
+            $userCheck = User::where('email', $googleUser->email)->first();
 
-        $accessToken = $googlService->getAccessToken();
+            if ($userCheck) {
+                $userCheck->update([
+                    'google_access_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                ]);
 
-        $refreshToken = $googlService->getRefreshToken();
+                Auth::login($userCheck);
+            } else {
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'google_access_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                    'is_verified' => true,
+                ]);
 
-        $userInfo = $googlService->userInfo();
+                Auth::login($user);
 
-        dd($accessToken, $refreshToken, $userInfo);
-
-        return view('google', compact('client', 'calendar', 'calendarId', 'accessToken', 'refreshToken', 'scopes', 'status'));
+                return redirect()->route('dashboard');
+            }
+        }
     }
 }
